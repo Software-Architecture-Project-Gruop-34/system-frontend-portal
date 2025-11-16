@@ -7,8 +7,8 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-4xl p-8 space-y-6 bg-white rounded-lg shadow-md">
+    <div className="h-full flex flex-col items-center justify-center  bg-gray-100">
+      <div className="w-full max-w-4xl p-8 space-y-6 bg-white rounded-lg shadow-md flex flex-col items-center">
         <h1 className="text-3xl font-bold text-center">Admin Dashboard</h1>
         <p className="text-center">Welcome, Admin!</p>
         {/* Add admin-specific components and features here */}
