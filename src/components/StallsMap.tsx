@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReservationModal from "./Modals/ReservationModal";
+import ReleaseModal from "./Modals/ReleaseModal";
 
 interface Stall {
   id: number;
@@ -28,6 +29,8 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
   const [selectedStall, setSelectedStall] = useState<Stall | null>(null);
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
   const [stalledForModal, setStalledForModal] = useState<Stall | null>(null);
+  const [releaseModalOpen, setReleaseModalOpen] = useState(false);
+  const [stalledForRelease, setStalledForRelease] = useState<Stall | null>(null);
 
   const sizeColors = {
     SMALL: "bg-blue-100 text-blue-700 border-blue-300",
@@ -50,10 +53,26 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
     setStalledForModal(null);
   };
 
+  const openRelease = (stall: Stall) => {
+    setStalledForRelease(stall);
+    setReleaseModalOpen(true);
+  };
+
+  const closeRelease = () => {
+    setReleaseModalOpen(false);
+    setStalledForRelease(null);
+  };
+
   // optional: update UI locally after confirm
   const handleConfirmReserve = async (stallId: number) => {
     if (selectedStall && selectedStall.id === stallId) {
       setSelectedStall({ ...selectedStall, status: "RESERVED" });
+    }
+  };
+
+  const handleConfirmRelease = async (stallId: number) => {
+    if (selectedStall && selectedStall.id === stallId) {
+      setSelectedStall({ ...selectedStall, status: "AVAILABLE" });
     }
   };
 
@@ -170,7 +189,7 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
                     ) : (
                       <>
                         <button
-                          onClick={() => alert(`Release stall ${selectedStall.stallCode}`)}
+                          onClick={() => openRelease(selectedStall)}
                           className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                         >
                           Release Stall
@@ -210,6 +229,14 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
         stall={stalledForModal}
         onClose={closeReservation}
         onConfirm={handleConfirmReserve}
+      />
+
+      {/* Release confirmation modal */}
+      <ReleaseModal
+        isVisible={releaseModalOpen}
+        stall={stalledForRelease}
+        onClose={closeRelease}
+        onConfirm={handleConfirmRelease}
       />
     </div>
   );
