@@ -35,10 +35,6 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
     onStallClick(stall.id);
   };
 
-  // Organize stalls into a grid (assuming we have x,y coordinates)
-  const maxCols = Math.max(...stalls.map(s => Math.floor(s.x / 100)), 8);
-  const maxRows = Math.max(...stalls.map(s => Math.floor(s.y / 100)), 6);
-
   return (
     <div className="space-y-6">
       <div className="grid lg:grid-cols-3 gap-6">
