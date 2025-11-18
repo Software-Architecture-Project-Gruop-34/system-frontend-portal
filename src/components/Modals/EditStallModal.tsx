@@ -44,8 +44,8 @@ const EditStallModal: React.FC<EditStallModalProps> = ({ isVisible, stall, onClo
     }
   }, [stall, isVisible]);
 
-  const update = <K extends keyof Stall>(key: K, value: any) => {
-    setForm(prev => ({ ...(prev as object), [key]: value }));
+  const update = <K extends keyof Stall>(key: K, value: Stall[K]) => {
+    setForm(prev => ({ ...(prev as Partial<Stall>), [key]: value }));
     setErrors(prev => ({ ...prev, [String(key)]: "" }));
   };
 

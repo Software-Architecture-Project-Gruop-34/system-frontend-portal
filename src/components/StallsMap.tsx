@@ -209,9 +209,9 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
                     onMouseMove={onMouseMove}
                     onMouseUp={onMouseUp}
                     onMouseLeave={onMouseUp}
-                    style={{
-                      cursor: isPanning.current ? "grabbing" : "grab",
-                    }}
+                    // style={{
+                    //   cursor: isPanning.current ? "grabbing" : "grab",
+                    // }}
                   >
                     {/* Background grid */}
                     <defs>

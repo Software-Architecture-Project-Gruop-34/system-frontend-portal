@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import StallsMap from "../components/StallsMap";
 import CreateStallModal from "../components/Modals/CreateStallModal";
 import { showSuccess, showError } from "../components/common/Toast";
