@@ -6,6 +6,8 @@ import Registration from './pages/Registration';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import UserDashboard from './pages/UserDashboard';
+import Stalls from './pages/Stalls';
+import StallProfile from './pages/StallProfile';
 import Layout from './layouts/Layout';
 
 function App() {
@@ -15,7 +17,11 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={
+          <Layout>
+            <Profile />
+          </Layout>
+        } />
         <Route path="/admin/dashboard" element={
           <Layout>
             <AdminDashboard />
@@ -28,6 +34,21 @@ function App() {
           </Layout>
         } />
         <Route path="/" element={<Login />} />
+      </Routes>
+      <Routes>
+        <Route path="/stalls" element={
+          <Layout>
+            <Stalls />
+          </Layout>
+        } />
+      </Routes>
+
+      <Routes>
+        <Route path="/stalls/:id" element={
+          <Layout>
+            <StallProfile />
+          </Layout>
+        } />
       </Routes>
     </Router>
   );
