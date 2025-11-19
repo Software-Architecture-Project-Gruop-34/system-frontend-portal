@@ -57,7 +57,7 @@ const ReleaseModal: React.FC<ReleaseModalProps> = ({ isVisible, stall, onClose, 
       // Find the active reservation for this stall
       const reservation = Array.isArray(reservations) 
         ? reservations.find((r: any) => r.stallId === stall.id && r.userId === Number(userId))
-        : reservations;
+        : reservations
 
       if (!reservation || !reservation.id) {
         throw new Error("No active reservation found for this stall");
