@@ -56,6 +56,7 @@ const ReleaseModal: React.FC<ReleaseModalProps> = ({ isVisible, stall, onClose, 
       
       // Find the active reservation for this stall
       const reservation = Array.isArray(reservations) 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ? reservations.find((r: any) => r.stallId === stall.id && r.userId === Number(userId))
         : reservations
 
