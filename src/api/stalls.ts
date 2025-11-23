@@ -118,3 +118,29 @@ export const getStallsBySize = async (size: string): Promise<Stall[]> => {
   const data = (await res.json()) as Stall[];
   return Array.isArray(data) ? data : [];
 };
+
+export const getStallsByStatus = async (status: string): Promise<Stall[]> => {
+  const st = status.trim().toUpperCase();
+  if (!st || !['AVAILABLE','RESERVED','BLOCKED'].includes(st)) throw new Error('Status must be AVAILABLE, RESERVED or BLOCKED');
+
+  const token = localStorage.getItem('token');
+  const url = `${STALL_BASE}/stalls/status/${encodeURIComponent(st)}`;
+  const res = await fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!res.ok) {
+    let message = `Failed to fetch stalls by status (${res.status})`;
+    try {
+      const j = await res.json();
+      if (j?.message) message = j.message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as Stall[];
+  return Array.isArray(data) ? data : [];
+};
