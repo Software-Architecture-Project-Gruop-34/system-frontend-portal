@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getStallByCode, searchStallsByName } from '../../api/stalls';
+import { getStallByCode, searchStallsByName, searchStallsByCategory } from '../../api/stalls';
 import type { Stall } from '../../api/stalls';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -21,7 +21,7 @@ const StallSearchBox: React.FC<StallSearchBoxProps> = ({ onFound, className = ''
     setError('');
     setCount(null);
     const q = query.trim();
-    if (!q) { setError('Enter stall code or name'); return; }
+    if (!q) { setError('Enter stall code, name or category'); return; }
 
     setLoading(true);
     try {
@@ -37,9 +37,16 @@ const StallSearchBox: React.FC<StallSearchBoxProps> = ({ onFound, className = ''
         }
       }
 
-      const list = await searchStallsByName(q);
-      onFound(list);
-      setCount(list.length);
+      // Perform both name and category searches and merge (dedupe by id)
+      const [byName, byCategory] = await Promise.all([
+        searchStallsByName(q).catch(() => []),
+        searchStallsByCategory(q).catch(() => []),
+      ]);
+      const mergedMap = new Map<number, Stall>();
+      for (const s of [...byName, ...byCategory]) mergedMap.set(s.id, s);
+      const merged = Array.from(mergedMap.values());
+      onFound(merged);
+      setCount(merged.length);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Search failed');
     } finally {
@@ -53,7 +60,7 @@ const StallSearchBox: React.FC<StallSearchBoxProps> = ({ onFound, className = ''
         <input
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Search by code (S001) or name"
+          placeholder="Search by code (S001), name or category"
           className="flex-1 px-3 py-2 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           maxLength={100}
         />

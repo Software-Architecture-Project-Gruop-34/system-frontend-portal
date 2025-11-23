@@ -66,3 +66,29 @@ export const searchStallsByName = async (stallName: string): Promise<Stall[]> =>
   const data = (await res.json()) as Stall[];
   return Array.isArray(data) ? data : [];
 };
+
+export const searchStallsByCategory = async (category: string): Promise<Stall[]> => {
+  const cat = category.trim();
+  if (!cat) throw new Error('Category required');
+
+  const token = localStorage.getItem('token');
+  const url = `${STALL_BASE}/stalls/search/category?category=${encodeURIComponent(cat)}`;
+  const res = await fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!res.ok) {
+    let message = `Failed to search by category (${res.status})`;
+    try {
+      const j = await res.json();
+      if (j?.message) message = j.message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as Stall[];
+  return Array.isArray(data) ? data : [];
+};
