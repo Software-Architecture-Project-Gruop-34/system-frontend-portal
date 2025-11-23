@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReservationModal from "./Modals/ReservationModal";
 import ReleaseModal from "./Modals/ReleaseModal";
+import StallSearch from "./common/StallSearch";
 import { Grid3x3, Map } from "lucide-react";
 
 interface Stall {
@@ -28,6 +29,7 @@ interface StallsMapProps {
 const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
   const navigate = useNavigate();
   const [selectedStall, setSelectedStall] = useState<Stall | null>(null);
+  const [searchResult, setSearchResult] = useState<Stall | null>(null);
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
   const [stalledForModal, setStalledForModal] = useState<Stall | null>(null);
   const [releaseModalOpen, setReleaseModalOpen] = useState(false);
@@ -123,7 +125,7 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl font-semibold">Exhibition Hall Layout</h2>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                   {/* View Toggle */}
                   <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
                     <button
@@ -168,11 +170,44 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
               </p>
             </div>
 
+            {/* Search */}
+                  <div className="min-w-[260px] mt-2 mx-2">
+                    <StallSearch
+                      onFound={(stall) => {
+                        setSelectedStall(stall);
+                        setSearchResult(stall);
+                        if (viewMode === 'map') {
+                          const targetX = stall.x + stall.width / 2;
+                          const targetY = stall.y + stall.depth / 2;
+                          const container = svgRef.current?.getBoundingClientRect();
+                          if (container) {
+                            const centerX = container.width / 2;
+                            const centerY = container.height / 2;
+                            setOffset({
+                              x: centerX - targetX * zoom,
+                              y: centerY - targetY * zoom,
+                            });
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {searchResult && (
+                    <button
+                      type="button"
+                      onClick={() => { setSearchResult(null);}}
+                      className="text-sm px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200 m-2"
+                    >
+                      Show all
+                    </button>
+                  )}
+ 
             <div className="p-6">
               {viewMode === "grid" ? (
                 // Grid View
                 <div className="grid grid-cols-8 gap-2">
-                  {stalls.map((stall) => {
+                  {(searchResult ? [searchResult] : stalls).map((stall) => {
                     const isAvailable = stall.status === "AVAILABLE";
                     const sizeClass =
                       sizeColors[stall.size.toUpperCase() as keyof typeof sizeColors] ||
@@ -236,7 +271,7 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
                       />
 
                       {/* Stalls */}
-                      {stalls.map((stall) => {
+                      {(searchResult ? [searchResult] : stalls).map((stall) => {
                         const isAvailable = stall.status === "AVAILABLE";
                         const isSelected = selectedStall?.id === stall.id;
 
