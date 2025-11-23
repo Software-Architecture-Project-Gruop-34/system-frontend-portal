@@ -136,6 +136,7 @@ const EditStallModal: React.FC<EditStallModalProps> = ({ isVisible, stall, onClo
       const updated: Stall = await res.json().catch(() => ({ ...(stall as Stall), ...(payload as Partial<Stall>) } as Stall));
       onSave?.(updated);
       onClose();
+      window.location.reload();
     } catch (err: unknown) {
       console.error(err);
       const msg = err instanceof Error ? err.message : String(err);
