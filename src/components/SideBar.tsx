@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const SideBar: React.FC = () => {
   const rawRole = localStorage.getItem('userRole') || '';
@@ -27,43 +27,117 @@ const SideBar: React.FC = () => {
 
           {isUser && (
             <>
-            <Link to="/dashboard" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 rounded transition-colors ${
+                  isActive
+                    ? 'bg-blue-50 text-blue-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`
+              }
+              end
+            >
               <span className="ml-2">Dashboard</span>
-            </Link> 
+            </NavLink>
 
-            <Link to="/stalls" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
-                <span className="ml-2">Stalls</span>
-            </Link>
+            <NavLink
+              to="/stalls"
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 rounded transition-colors ${
+                  isActive
+                    ? 'bg-blue-50 text-blue-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`
+              }
+            >
+              <span className="ml-2">Stalls</span>
+            </NavLink>
 
-            <Link to="/myreservations" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+            <NavLink
+              to="/myreservations"
+              className={({ isActive }) =>
+                `flex items-center px-3 py-2 rounded transition-colors ${
+                  isActive
+                    ? 'bg-blue-50 text-blue-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`
+              }
+            >
               <span className="ml-2">My Reservations</span>
-            </Link>
+            </NavLink>
             </>
           )}
 
           {isAdmin && (
             <>
-              <Link to="/admin/dashboard" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+              <NavLink
+                to="/admin/dashboard"
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-medium'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`
+                }
+                end
+              >
                 <span className="ml-2">Dashboard</span>
-              </Link> 
+              </NavLink>
 
-              <Link to="/stalls" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+              <NavLink
+                to="/stalls"
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-medium'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`
+                }
+              >
                 <span className="ml-2">Stalls</span>
-              </Link>
+              </NavLink>
 
-              <Link to="/users" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+              <NavLink
+                to="/users"
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-medium'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`
+                }
+              >
                 <span className="ml-2">Users</span>
-              </Link>
+              </NavLink>
 
-              <Link to="/reports" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+              <NavLink
+                to="/reports"
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-medium'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`
+                }
+              >
                 <span className="ml-2">Reports</span>
-              </Link>
+              </NavLink>
             </>
           )}
 
-          <Link to="/settings" className="flex items-center px-3 py-2 text-gray-700 rounded hover:bg-gray-100">
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `flex items-center px-3 py-2 rounded transition-colors ${
+                isActive
+                  ? 'bg-blue-50 text-blue-700 font-medium'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`
+            }
+          >
             <span className="ml-2">Settings</span>
-          </Link>
+          </NavLink>
 
           <button type="button" onClick={handleLogout} className="w-full text-left flex items-center px-3 py-2 text-red-600 rounded hover:bg-red-50">
             <span className="ml-2">Logout</span>
