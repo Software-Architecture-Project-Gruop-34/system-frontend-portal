@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "../common/Modal";
 import { showError } from "../common/Toast";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 interface Stall {
   id: number;
@@ -148,7 +149,7 @@ const EditStallModal: React.FC<EditStallModalProps> = ({ isVisible, stall, onClo
 
   return (
     <Modal isVisible={isVisible} onClose={onClose} width="max-w-2xl" closeOnBackdrop>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 relative">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Edit Stall</h3>
         </div>
@@ -305,6 +306,11 @@ const EditStallModal: React.FC<EditStallModalProps> = ({ isVisible, stall, onClo
             {saving ? "Saving..." : "Save changes"}
           </button>
         </div>
+        {saving && (
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center rounded">
+            <LoadingSpinner size={40} label="Updating stall..." />
+          </div>
+        )}
       </form>
     </Modal>
   );
