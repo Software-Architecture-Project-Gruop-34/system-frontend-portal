@@ -92,3 +92,29 @@ export const searchStallsByCategory = async (category: string): Promise<Stall[]>
   const data = (await res.json()) as Stall[];
   return Array.isArray(data) ? data : [];
 };
+
+export const getStallsBySize = async (size: string): Promise<Stall[]> => {
+  const sz = size.trim().toUpperCase();
+  if (!sz || !['SMALL','MEDIUM','LARGE'].includes(sz)) throw new Error('Size must be SMALL, MEDIUM or LARGE');
+
+  const token = localStorage.getItem('token');
+  const url = `${STALL_BASE}/stalls/size/${encodeURIComponent(sz)}`;
+  const res = await fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+
+  if (!res.ok) {
+    let message = `Failed to fetch stalls by size (${res.status})`;
+    try {
+      const j = await res.json();
+      if (j?.message) message = j.message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  const data = (await res.json()) as Stall[];
+  return Array.isArray(data) ? data : [];
+};

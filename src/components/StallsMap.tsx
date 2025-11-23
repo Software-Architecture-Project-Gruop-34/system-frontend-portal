@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ReservationModal from "./Modals/ReservationModal";
 import ReleaseModal from "./Modals/ReleaseModal";
 import StallSearchBox from "./common/StallSearchBox";
+import StallSizeFilter from "./common/StallSizeFilter";
 import { Grid3x3, Map } from "lucide-react";
 
 interface Stall {
@@ -171,8 +172,8 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
               </p>
             </div>
 
-            {/* Unified Search */}
-                  <div className="min-w-[320px] mt-2 mx-2">
+            {/* Search */}
+                  <div className="min-w-[320px] mt-2 mx-2 flex flex-col gap-2">
                     <StallSearchBox
                       onFound={(results) => {
                         setFilteredStalls(results);
@@ -196,6 +197,16 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
                         } else {
                           setSearchResult(null);
                         }
+                      }}
+                    />
+                    <StallSizeFilter
+                      onFilter={(sizeResults) => {
+                        if (sizeResults === null) {
+                          if (searchResult) setFilteredStalls([searchResult]); else setFilteredStalls(null);
+                          return;
+                        }
+                        setFilteredStalls(sizeResults);
+                        if (sizeResults.length) setSelectedStall(sizeResults[0]);
                       }}
                     />
                   </div>
