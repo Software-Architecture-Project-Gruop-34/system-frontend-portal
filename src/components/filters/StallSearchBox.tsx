@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getStallByCode, searchStallsByName, searchStallsByCategory } from '../../api/stalls';
 import type { Stall } from '../../api/stalls';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 interface StallSearchBoxProps {
   onFound: (stalls: Stall[]) => void;
@@ -37,7 +37,6 @@ const StallSearchBox: React.FC<StallSearchBoxProps> = ({ onFound, className = ''
         }
       }
 
-      // Perform both name and category searches and merge (dedupe by id)
       const [byName, byCategory] = await Promise.all([
         searchStallsByName(q).catch(() => []),
         searchStallsByCategory(q).catch(() => []),
@@ -55,12 +54,12 @@ const StallSearchBox: React.FC<StallSearchBoxProps> = ({ onFound, className = ''
   };
 
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className={`space-y-2 w-2/4 ${className}`}>
       <form onSubmit={doSearch} className="flex gap-2">
         <input
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Search by code (S001), name or category"
+          placeholder="Search by code, name or category"
           className="flex-1 px-3 py-2 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           maxLength={100}
         />

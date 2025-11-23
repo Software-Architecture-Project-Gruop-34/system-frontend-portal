@@ -2,8 +2,9 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReservationModal from "./Modals/ReservationModal";
 import ReleaseModal from "./Modals/ReleaseModal";
-import StallSearchBox from "./common/StallSearchBox";
-import StallSizeFilter from "./common/StallSizeFilter";
+import StallSearchBox from "./filters/StallSearchBox";
+import StallSizeFilter from "./filters/StallSizeFilter";
+import StallStatusFilter from "./filters/StallStatusFilter";
 import { Grid3x3, Map } from "lucide-react";
 
 interface Stall {
@@ -173,7 +174,7 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
             </div>
 
             {/* Search */}
-                  <div className="min-w-[320px] mt-2 mx-2 flex flex-col gap-2">
+                  <div className="min-w-[320px] mt-2 mx-2 flex flex-row gap-2">
                     <StallSearchBox
                       onFound={(results) => {
                         setFilteredStalls(results);
@@ -207,6 +208,16 @@ const StallsMap: React.FC<StallsMapProps> = ({ stalls, onStallClick }) => {
                         }
                         setFilteredStalls(sizeResults);
                         if (sizeResults.length) setSelectedStall(sizeResults[0]);
+                      }}
+                    />
+                    <StallStatusFilter
+                      onFilter={(statusResults) => {
+                        if (statusResults === null) {
+                          if (searchResult) setFilteredStalls([searchResult]); else setFilteredStalls(null);
+                          return;
+                        }
+                        setFilteredStalls(statusResults);
+                        if (statusResults.length) setSelectedStall(statusResults[0]);
                       }}
                     />
                   </div>

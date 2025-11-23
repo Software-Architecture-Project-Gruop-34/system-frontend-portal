@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { getStallsBySize } from '../../api/stalls';
+import { getStallsByStatus } from '../../api/stalls';
 import type { Stall } from '../../api/stalls';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 
-interface StallSizeFilterProps {
+interface StallStatusFilterProps {
   onFilter: (stalls: Stall[] | null) => void;
   className?: string;
 }
 
-const StallSizeFilter: React.FC<StallSizeFilterProps> = ({ onFilter, className = '' }) => {
-  const [size, setSize] = useState<string>('');
+const StallStatusFilter: React.FC<StallStatusFilterProps> = ({ onFilter, className = '' }) => {
+  const [status, setStatus] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [count, setCount] = useState<number | null>(null);
@@ -18,21 +18,21 @@ const StallSizeFilter: React.FC<StallSizeFilterProps> = ({ onFilter, className =
     e?.preventDefault();
     setError('');
     setCount(null);
-    if (!size) { onFilter(null); return; }
+    if (!status) { onFilter(null); return; }
     setLoading(true);
     try {
-      const list = await getStallsBySize(size);
+      const list = await getStallsByStatus(status);
       onFilter(list);
       setCount(list.length);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Size fetch failed');
+      setError(err instanceof Error ? err.message : 'Status fetch failed');
     } finally {
       setLoading(false);
     }
   };
 
   const clear = () => {
-    setSize('');
+    setStatus('');
     setCount(null);
     setError('');
     onFilter(null);
@@ -42,14 +42,14 @@ const StallSizeFilter: React.FC<StallSizeFilterProps> = ({ onFilter, className =
     <div className={`space-y-2 ${className}`}>
       <form onSubmit={apply} className="flex items-center gap-2">
         <select
-          value={size}
-          onChange={e => setSize(e.target.value)}
+          value={status}
+          onChange={e => setStatus(e.target.value)}
           className="px-3 py-2 text-sm border rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="">All sizes</option>
-          <option value="SMALL">SMALL</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="LARGE">LARGE</option>
+          <option value="">All status</option>
+          <option value="AVAILABLE">AVAILABLE</option>
+          <option value="RESERVED">RESERVED</option>
+          <option value="BLOCKED">BLOCKED</option>
         </select>
         <button
           type="submit"
@@ -58,7 +58,7 @@ const StallSizeFilter: React.FC<StallSizeFilterProps> = ({ onFilter, className =
         >
           {loading ? 'Loading...' : 'Apply'}
         </button>
-        {size && (
+        {status && (
           <button type="button" onClick={clear} className="px-2 py-2 text-sm rounded bg-gray-100 hover:bg-gray-200">Clear</button>
         )}
       </form>
@@ -71,4 +71,4 @@ const StallSizeFilter: React.FC<StallSizeFilterProps> = ({ onFilter, className =
   );
 };
 
-export default StallSizeFilter;
+export default StallStatusFilter;
