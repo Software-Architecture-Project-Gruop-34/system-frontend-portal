@@ -99,6 +99,18 @@ const SideBar: React.FC = () => {
               </NavLink>
 
               <NavLink
+                to="/admin/reservations"
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-medium'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`
+                }
+              >
+                <span className="ml-2">Reservations</span>
+              </NavLink>
+              <NavLink
                 to="/users"
                 className={({ isActive }) =>
                   `flex items-center px-3 py-2 rounded transition-colors ${
@@ -124,18 +136,7 @@ const SideBar: React.FC = () => {
                 <span className="ml-2">Reports</span>
               </NavLink>
 
-              <NavLink
-                to="/admin/reservations"
-                className={({ isActive }) =>
-                  `flex items-center px-3 py-2 rounded transition-colors ${
-                    isActive
-                      ? 'bg-blue-50 text-blue-700 font-medium'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`
-                }
-              >
-                <span className="ml-2">Reservations</span>
-              </NavLink>
+             
             </>
           )}
 

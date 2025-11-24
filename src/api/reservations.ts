@@ -38,3 +38,32 @@ export const getReservations = async (): Promise<Reservation[]> => {
   const data = (await res.json()) as Reservation[];
   return Array.isArray(data) ? data : [];
 };
+
+export const confirmReservation = async (id: number): Promise<{ message: string }> => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication required. Please log in.');
+
+  const res = await fetch(`${BASE}/reservations/${id}/confirm`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    let message = `Failed to confirm reservation (${res.status})`;
+    try {
+      const j = await res.json();
+      if (j?.message) message = j.message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  try {
+    const data = await res.json();
+    return { message: data?.message || 'Reservation confirmed' };
+  } catch {
+    return { message: 'Reservation confirmed' };
+  }
+};
