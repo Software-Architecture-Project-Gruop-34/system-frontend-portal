@@ -1,5 +1,5 @@
 import React from 'react';
-import { StallSummary } from '../components/Dashboard';
+import { StallSummary, ReservationSummary } from '../components/Dashboard';
 
 const AdminDashboard: React.FC = () => {
   const handleLogout = () => {
@@ -22,6 +22,7 @@ const AdminDashboard: React.FC = () => {
 
         <div className="space-y-6">
           <StallSummary />
+          <ReservationSummary />
         </div>
       </div>
     </div>
