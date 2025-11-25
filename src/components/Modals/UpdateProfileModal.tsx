@@ -54,7 +54,6 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
     setError(null);
 
     try {
-      // Remove businessName if user is ADMIN
       const dataToSubmit = currentUser.role === 'ADMIN' 
         ? { 
             contactPerson: formData.contactPerson,
@@ -84,7 +83,6 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Business Name - Only show for non-admin users */}
         {currentUser.role !== 'ADMIN' && (
           <div>
             <label htmlFor="businessName" className="block text-sm font-medium text-gray-700 mb-1">
