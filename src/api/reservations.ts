@@ -67,3 +67,31 @@ export const confirmReservation = async (id: number): Promise<{ message: string 
     return { message: 'Reservation confirmed' };
   }
 };
+
+export const getReservationQrCode = async (id: number): Promise<string> => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication required. Please log in.');
+
+  const res = await fetch(`${BASE}/reservations/${id}/qr-code`, {
+    headers: {
+      Accept: 'text/plain,application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    let message = `Failed to fetch QR code (${res.status})`;
+    try {
+      const j = await res.json();
+      if (j?.message) message = j.message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  try {
+    const text = await res.text();
+    return text.trim();
+  } catch {
+    throw new Error('Failed to parse QR code response');
+  }
+};
