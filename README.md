@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# Bookfair Stall Reservation System — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern React + TypeScript frontend for an exhibition/bookfair stall reservation system. It provides separate experiences for Users (vendors) and Admins with dashboards, reservations, stalls browsing, and profile management.
 
-Currently, two official plugins are available:
+## Tech Stack
+- React 19 + TypeScript + Vite 7
+- Tailwind CSS 4
+- React Router 7
+- Axios, React Toastify, Lucide Icons
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Quick Start (Windows PowerShell)
+```powershell
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Build and preview:
+```powershell
+npm run build
+npm run preview
 ```
+
+Lint:
+```powershell
+npm run lint
+```
+
+## Project Structure
+```
+src/
+  api/                 # API clients (users 8083, stalls 8081, reservations 8082)
+  components/
+    common/            # Modal, Table, Toast, LoadingSpinner
+    Dashboard/         # StallSummary, ReservationSummary, UserOverview
+    NavBar.tsx, SideBar.tsx
+  pages/               # Login, Profile, Stalls, MyReservations, AdminDashboard, UserDashboard
+  utils/               # Helpers
+```
+
+## Key Features
+- Admin Dashboard
+  - Stall summary by status/size
+  - Reservation summary (pending/confirmed/cancelled/revenue)
+- User Dashboard
+  - Personal reservation stats, upcoming reservation, recent reservations
+  - Stall availability snapshot
+- Profile
+  - View profile; update profile via modal (role-aware fields)
+- Stalls
+  - Browse/search/filter stalls by status, size, category/name
+- Reservations
+  - List user reservations; admin view of all reservations
+
+## Routing (examples)
+- User: `/dashboard`, `/stalls`, `/myreservations`, `/profile`
+- Admin: `/admin/dashboard`, `/admin/reservations`
+- Auth: `/login`
+
+## Configuration
+- Services (defaults hardcoded in API clients):
+  - User Service: `http://localhost:8083/api`
+  - Stall Service: `http://localhost:8081/api`
+  - Reservation Service: `http://localhost:8082/api`
+- Auth: Bearer token stored in `localStorage` as `token`. Additional keys: `userId`, `userRole`, `userStatus`.
+
+If your backend runs on different hosts/ports, update the base URLs in:
+- `src/api/auth.ts`
+- `src/api/stalls.ts`
+- `src/api/reservations.ts`
+
+## Development Notes
+- Type-only imports: project enables `verbatimModuleSyntax`. Import types with `import type { ... } from '...'`.
+- Tailwind gradients: use `bg-linear-to-r|br` utilities as used in components.
+- Toasts: success/error feedback via `react-toastify`.
+
+## Scripts
+- `npm run dev`: Start Vite dev server
+- `npm run build`: Type-check and build
+- `npm run preview`: Preview built app
+- `npm run lint`: Run ESLint
+
+## License
+Private academic project. No license specified.

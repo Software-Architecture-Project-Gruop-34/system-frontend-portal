@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Table from '../components/common/Table';
 import type { Column } from '../components/common/Table';
-import { getReservations } from '../api/reservations';
+import { getReservations, verifyReservationByQr } from '../api/reservations';
 import type { Reservation } from '../api/reservations';
 import ConfirmReservationModal from '../components/Modals/ConfirmReservationModal';
+import ReservationDetailsModal from '../components/Modals/ReservationDetailsModal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const AdminReservations: React.FC = () => {
@@ -11,6 +12,10 @@ const AdminReservations: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [confirmModalId, setConfirmModalId] = useState<number | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [detailMsg, setDetailMsg] = useState<string>('');
+  const [detailReservation, setDetailReservation] = useState<Reservation | undefined>(undefined);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -59,15 +64,46 @@ const AdminReservations: React.FC = () => {
     {
       key: 'actions', header: 'Actions', sortable: false,
       render: (_: any, row) => (
-        row.status === 'PENDING' ? (
+        <div className="flex items-center gap-2">
+          {row.status === 'PENDING' && (
+            <button
+              type="button"
+              onClick={() => setConfirmModalId(row.id)}
+              className="px-3 py-1.5 text-xs rounded bg-green-600 text-white hover:bg-green-700"
+            >
+              Confirm
+            </button>
+          )}
           <button
             type="button"
-            onClick={() => setConfirmModalId(row.id)}
-            className="px-3 py-1.5 text-xs rounded bg-green-600 text-white hover:bg-green-700"
+            onClick={async () => {
+              setDetailMsg('');
+              setDetailReservation(undefined);
+              setDetailOpen(true);
+              if (!row.qrCode) {
+                setDetailMsg('Reservation is pending. QR code is not available yet.');
+                return;
+              }
+              try {
+                setDetailLoading(true);
+                const result = await verifyReservationByQr(row.qrCode);
+                if (result.reservation) {
+                  setDetailReservation(result.reservation);
+                } else {
+                  setDetailMsg(result.message || 'No message provided');
+                }
+              } catch (e) {
+                const msg = e instanceof Error ? e.message : 'Failed to verify reservation';
+                setDetailMsg(msg);
+              } finally {
+                setDetailLoading(false);
+              }
+            }}
+            className="px-3 py-1.5 text-xs rounded bg-blue-600 text-white hover:bg-blue-700"
           >
-            Confirm
+            View Details
           </button>
-        ) : <span className="text-xs text-gray-400">—</span>
+        </div>
       )
     },
    // { key: 'createdAt', header: 'Created', sortable: true, render: (v) => v ? new Date(v).toLocaleString() : '-' },
@@ -111,6 +147,14 @@ const AdminReservations: React.FC = () => {
         onConfirmed={(id) => {
           setData(prev => prev.map(r => r.id === id ? { ...r, status: 'CONFIRMED', confirmationDate: new Date().toISOString(), updatedAt: new Date().toISOString() } : r));
         }}
+      />
+
+      <ReservationDetailsModal
+        isVisible={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        message={detailMsg}
+        reservation={detailReservation}
+        loading={detailLoading}
       />
     </div>
   );
