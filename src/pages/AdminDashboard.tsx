@@ -1,4 +1,5 @@
 import React from 'react';
+import { StallSummary } from '../components/Dashboard';
 
 const AdminDashboard: React.FC = () => {
   const handleLogout = () => {
@@ -7,18 +8,22 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col items-center justify-center  bg-gray-100">
-      <div className="w-full max-w-4xl p-8 space-y-6 bg-white rounded-lg shadow-md flex flex-col items-center">
-        <h1 className="text-3xl font-bold text-center">Admin Dashboard</h1>
-        <p className="text-center">Welcome, Admin!</p>
-        {/* Add admin-specific components and features here */}
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          {/* <button
+            onClick={handleLogout}
+            className="px-4 py-2 font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Logout
+          </button> */}
+        </div>
+
+        <div className="space-y-6">
+          <StallSummary />
+        </div>
       </div>
-      <button
-        onClick={handleLogout}
-        className="px-4 py-2 mt-4 font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-      >
-        Logout
-      </button>
     </div>
   );
 };
