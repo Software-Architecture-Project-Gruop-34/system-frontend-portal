@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { getUserProfile } from '../api/auth';
 import type { User } from '../types';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import UpdateProfileModal from '../components/Modals/UpdateProfileModal';
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   useEffect(() => {
     fetchUserProfile();
@@ -35,6 +37,10 @@ const Profile: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleUpdateProfile = (updatedUser: User) => {
+    setUser(updatedUser);
   };
 
   const formatDate = (dateString: string) => {
@@ -70,12 +76,12 @@ const Profile: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-semibold">User Profile</h1>
-          {/* <button
-            onClick={fetchUserProfile}
+          <button
+            onClick={() => setIsUpdateModalOpen(true)}
             className="text-sm px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Refresh
-          </button> */}
+            Edit Profile
+          </button>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
@@ -128,6 +134,16 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Update Profile Modal */}
+        {user && (
+          <UpdateProfileModal
+            isVisible={isUpdateModalOpen}
+            onClose={() => setIsUpdateModalOpen(false)}
+            currentUser={user}
+            onUpdate={handleUpdateProfile}
+          />
+        )}
       </div>
     </div>
   );
