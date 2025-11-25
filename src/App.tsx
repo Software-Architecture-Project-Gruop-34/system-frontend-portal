@@ -10,6 +10,7 @@ import Stalls from './pages/Stalls';
 import StallProfile from './pages/StallProfile';
 import Layout from './layouts/Layout';
 import MyReservations from './pages/MyReservations';
+import AdminReservations from './pages/AdminReservations';
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
         <Route path="/stalls" element={
           <Layout>
             <Stalls />
+          </Layout>
+        } />
+      </Routes>
+
+      <Routes>
+        <Route path="/admin/reservations" element={
+          <Layout>
+            <AdminReservations />
           </Layout>
         } />
       </Routes>
