@@ -2,10 +2,10 @@ import React from 'react';
 import { StallSummary, ReservationSummary } from '../components/Dashboard';
 
 const AdminDashboard: React.FC = () => {
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = '/login';
-  };
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  //   window.location.href = '/login';
+  // };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">

@@ -2,13 +2,13 @@ export interface Reservation {
   id: number;
   userId: number;
   stallId: number;
-  reservationDate: string; // ISO
-  confirmationDate: string | null; // ISO or null
+  reservationDate: string;
+  confirmationDate: string | null; 
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | string;
   qrCode: string | null;
   totalAmount: number;
-  createdAt: string; // ISO
-  updatedAt: string; // ISO
+  createdAt: string; 
+  updatedAt: string; 
 }
 
 const BASE = 'http://localhost:8082/api';

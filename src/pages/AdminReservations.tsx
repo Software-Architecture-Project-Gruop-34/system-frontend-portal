@@ -3,7 +3,6 @@ import Table from '../components/common/Table';
 import type { Column } from '../components/common/Table';
 import { getReservations } from '../api/reservations';
 import type { Reservation } from '../api/reservations';
-import { toast } from 'react-toastify';
 import ConfirmReservationModal from '../components/Modals/ConfirmReservationModal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 

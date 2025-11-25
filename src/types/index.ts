@@ -65,3 +65,16 @@ export interface User {
       user: User;
     };
   }
+
+  export interface UpdateProfileData {
+    businessName?: string;
+    contactPerson: string;
+    phoneNumber: string;
+    address: string;
+  }
+
+  export interface UserProfileResponse {
+  success: boolean;
+  message: string;
+  data: User;
+}
